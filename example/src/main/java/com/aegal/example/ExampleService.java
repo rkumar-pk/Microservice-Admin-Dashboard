@@ -4,10 +4,14 @@ import com.aegal.example.resources.ExampleResource;
 import com.aegal.framework.core.MicroserviceBundle;
 import com.aegal.framework.core.MicroserviceConfig;
 import com.aegal.framework.core.tenacity.InitializeTenacity;
+
+import com.yammer.tenacity.core.bundle.BaseTenacityBundleConfigurationFactory;
 import com.yammer.tenacity.core.bundle.TenacityBundleBuilder;
+import com.yammer.tenacity.core.bundle.TenacityBundleConfigurationFactory;
 import com.yammer.tenacity.core.properties.TenacityPropertyKey;
 import com.yammer.tenacity.core.properties.TenacityPropertyKeyFactory;
 import io.dropwizard.Application;
+import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -27,7 +31,6 @@ public class ExampleService extends Application<MicroserviceConfig> {
 
         public static TenacityPropertyKeyFactory getTenacityPropertyKeyFactory() {
             return new TenacityPropertyKeyFactory(){
-                @Override
                 public TenacityPropertyKey from(String value) {
                     return DependencyKeys.valueOf(value.toUpperCase());
                 }
@@ -37,11 +40,17 @@ public class ExampleService extends Application<MicroserviceConfig> {
 
     @Override
     public void initialize(Bootstrap<MicroserviceConfig> bootstrap) {
-        bootstrap.addBundle(new MicroserviceBundle<>());
-        bootstrap.addBundle(TenacityBundleBuilder.newBuilder()
-                .propertyKeyFactory(DependencyKeys.getTenacityPropertyKeyFactory())
-                .propertyKeys(DependencyKeys.values())
-                .build());
+    	 TenacityBundleConfigurationFactory<Configuration> configurationFactory = new BaseTenacityBundleConfigurationFactory<Configuration>() {
+ 			
+ 			@Override
+ 			public TenacityPropertyKeyFactory getTenacityPropertyKeyFactory(Configuration applicationConfiguration) {
+ 				// TODO Auto-generated method stub
+ 				return DependencyKeys.getTenacityPropertyKeyFactory();
+ 			}
+ 			
+ 			
+ 		};
+ 		bootstrap.addBundle( TenacityBundleBuilder.newBuilder().configurationFactory(configurationFactory).build());
     }
 
     @Override

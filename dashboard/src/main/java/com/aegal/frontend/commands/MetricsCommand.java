@@ -124,7 +124,7 @@ public class MetricsCommand extends TenacityCommand<MetricsDTO> {
 
             for (String filterPart : Splitter.on(',').omitEmptyStrings().trimResults().splitToList(filter)) {
                 JsonNode filterResult = metrics.findValue(filterPart);
-                metricsNode.set(filterPart, Objects.firstNonNull(filterResult, MissingNode.getInstance()));
+                metricsNode.set(filterPart, filterResult);
             }
 
             resultNode.set("metrics", metricsNode);

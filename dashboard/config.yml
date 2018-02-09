@@ -11,7 +11,7 @@ server:
   #allow 1 dashboard service per server so specify port.
   applicationConnectors:
   - type: http
-    port: 8080
+    port: 0
   adminConnectors:
   - type: http
     port: 0

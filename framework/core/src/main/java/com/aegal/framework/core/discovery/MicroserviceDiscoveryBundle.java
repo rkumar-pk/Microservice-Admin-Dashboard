@@ -47,7 +47,7 @@ public class MicroserviceDiscoveryBundle<T extends MicroserviceConfig> extends
     public void run(@Nonnull MicroserviceConfig configuration, @Nonnull Environment environment) throws Exception {
         this.version = configuration.getVersion();
         this.environment = environment;
-        this.logFileName = getLogFileName(configuration);
+       // this.logFileName = getLogFileName(configuration);
         super.run(configuration, environment);
     }
 
@@ -77,7 +77,7 @@ public class MicroserviceDiscoveryBundle<T extends MicroserviceConfig> extends
         return discovery;
     }
 
-    private String getLogFileName(Configuration configuration) {
+   /* private String getLogFileName(Configuration configuration) {
         for (AppenderFactory appenderFactory : configuration.getLoggingFactory().getAppenders()) {
             if (appenderFactory instanceof FileAppenderFactory) {
                 FileAppenderFactory fileAppenderFactory = (FileAppenderFactory) appenderFactory;
@@ -86,7 +86,7 @@ public class MicroserviceDiscoveryBundle<T extends MicroserviceConfig> extends
         }
         return "";
     }
-
+*/
     public static MicroserviceDiscoveryBundle build(ServiceDiscovery<MicroserviceMetaData> serviceDiscovery) {
         MicroserviceDiscoveryBundle<MicroserviceConfig> bundle = new MicroserviceDiscoveryBundle<>();
         bundle.discovery = serviceDiscovery;
